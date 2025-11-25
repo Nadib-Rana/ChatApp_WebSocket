@@ -1,4 +1,4 @@
-import { WebSocketServer, WebSocket } from "ws";
+import { WebSocketServer, WebSocket, CLOSING } from "ws";
 import jwt from "jsonwebtoken";
 import Message from "../models/Message";
 
@@ -13,6 +13,7 @@ export const startWebSocketServer = (server: any) => {
 
   wss.on("connection", (ws: WSClient, req) => {
     const token = req.url?.replace("/?token=", "");
+    console.log("Token:", token);
     try {
       const decoded = jwt.verify(token!, process.env.JWT_SECRET as string) as any;
       ws.userId = decoded.id;
